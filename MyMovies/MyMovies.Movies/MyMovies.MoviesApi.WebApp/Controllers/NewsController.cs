@@ -1,29 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using MyMovies.MoviesApi.WebApp.Filters;
 using MyMovies.MoviesApi.WebApp.Services;
 
-namespace MyMovies.MoviesApi.WebApp.Controllers
+
+namespace MyMovies.MoviesApi.WebApp.Controllers;
+
+// [Route("api/[controller]")]
+// [ApiController]
+[LogActionFilter]
+[Produces("application/xml")]
+public class NewsController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    [logActionFilter]
-    public class NewsController : ControllerBase
+    private readonly MovieFeedService feedService;
+
+    public NewsController(MovieFeedService feedService)
     {
-        private readonly IMovieFeedService? _movieFeedService;
-
-        public NewsController(IMovieFeedService? movieFeedService)
-        {
-            _movieFeedService = movieFeedService;
-        }
-
-
-        [HttpGet("{strDateTime:dateFormat}")]
-        // GET: NewsController/news/5
-        public IActionResult Get(string strDatetime)
-        {
-            var objMovies = _movieFeedService?.GetMovieFeedItems(DateTime.Parse(strDatetime));
-            return Ok(objMovies);
-        }
-
+        this.feedService = feedService;
     }
+
+    public IList<MovieFeedItem> Movies(string strDatetime)
+        => feedService.GetMovieFeed(DateTime.Parse(strDatetime));
 }
+
+

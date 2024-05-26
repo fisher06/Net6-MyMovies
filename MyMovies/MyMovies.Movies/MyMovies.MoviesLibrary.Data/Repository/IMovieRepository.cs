@@ -1,17 +1,17 @@
 ﻿using MyMovies.MoviesLibrary.Domain;
 
-namespace MyMovies.MoviesLibrary.Data.Repository
+namespace MyMovies.MoviesLibrary.Data.Repository;
+
+public interface IMovieRepository
 {
-    public interface IMovieRepository
-    {
-        Task<IEnumerable<Movie>> GetAll();
+    Task<IEnumerable<Movie>> GetAll();
 
-        Task<Movie?> GetById(int? id);
+    Task<Movie?> GetById(int? id);
 
-        Task<Movie> Create(Movie? movie);
+    Task<Movie> Create(Movie? movie);
 
-        Task<Movie> Update(Movie? movie);
+    Task<Movie> Update(Movie? movie);
 
-        Task<int> Delete(Movie? movie);
-    }
+    Task<int> Delete(Movie? movie);
 }
+

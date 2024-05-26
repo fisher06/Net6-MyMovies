@@ -1,68 +1,108 @@
-﻿using System.Collections;
-using Microsoft.AspNetCore.Mvc;
-using MyMovies.MoviesApi.WebApp.Extensions;
-using MyMovies.MoviesApi.WebApp.Filters;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyMovies.MoviesLibrary.Data.Repository;
+using MyMovies.MoviesLibrary.Domain;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace MyMovies.MoviesApi.WebApp.Controllers
+namespace MyMovies.MoviesApi.WebApp.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ActorsController : ControllerBase
 {
-    /// <summary>
-    /// Actors Controller
-    /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
-    [logActionFilter]
-    public class ActorsController : ControllerBase
+    private readonly IActorRepository _actorRepository;
+    public ActorsController(IActorRepository actorRepository)
     {
-        /// <summary>
-        /// Operation de recuperation des films
-        /// </summary>
-        // GET: api/<ActorsController>
-        [HttpGet]
-        public IEnumerable Get()
+        _actorRepository = actorRepository;
+    }
+
+    // GET: api/<ActorsController>
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        try
         {
-            //throw new Exception("error");
-            return new string[] { ControllerContext.ToDisplay("value1"), ControllerContext.ToDisplay("value2") };
+            var actors = await _actorRepository.GetAll();
+            return Ok(actors);
         }
-
-        // GET api/<ActorsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        catch (Exception ex)
         {
-            return ControllerContext.ToDisplay(id.ToString());
+            //log error
+            return StatusCode(500, ex.Message);
         }
+    }
 
-        //public IActionResult Get(int id)
-        //{
-        //    try
-        //    {
-        //        return Ok($"{id}");
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return BadRequest(e);
-        //    }
-
-
-        //}
-
-        // POST api/<ActorsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+    // GET api/<ActorsController>/5
+    [HttpGet("{id}", Name = "GetActorById")]
+    public async Task<IActionResult> Get(int id)
+    {
+        try
         {
+            var actor = await _actorRepository.GetById(id);
+            if (actor == null)
+                return NotFound();
+            return Ok(actor);
         }
-
-        // PUT api/<ActorsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        catch (Exception ex)
         {
+            //log error
+            return StatusCode(500, ex.Message);
         }
+    }
 
-        // DELETE api/<ActorsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+    // POST api/<ActorsController>
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] Actor value)
+    {
+        try
         {
+            var createdActor = await _actorRepository.Create(value);
+            return CreatedAtRoute("GetActorById", new { id = createdActor.ID }, value);
+        }
+        catch (Exception ex)
+        {
+            //log error
+            return StatusCode(500, ex.Message);
+        }
+    }
+
+    // PUT api/<ActorsController>/5
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, [FromBody] Actor value)
+    {
+        try
+        {
+            var actor = await _actorRepository.GetById(id);
+            if (actor == null)
+                return NotFound();
+            value.ID = id;
+            await _actorRepository.Update(value);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            //log error
+            return StatusCode(500, ex.Message);
+        }
+    }
+
+
+    // DELETE api/<ActorsController>/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            var actor = await _actorRepository.GetById(id);
+            if (actor == null)
+                return NotFound();
+            await _actorRepository.Delete(new Actor { ID = id });
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            //log error
+            return StatusCode(500, ex.Message);
         }
     }
 }

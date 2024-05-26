@@ -2,22 +2,27 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace MyMovies.MoviesLibrary.Data.Migrations
+namespace MyMovies.MoviesLibrary.Data.Migrations;
+
+public static class MigrationManager
 {
-    public static class MigrationManager
+    public static IHost MigrateDatabase(this IHost host, string databaseName)
     {
-        public static IHost MigrationDatabase(this IHost host, string databaseName)
+        using var scope = host.Services.CreateScope();
+
+        var databaseService = scope.ServiceProvider.GetRequiredService<Database>();
+        var migrationService = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+        try
         {
-            using var scope = host.Services.CreateScope();
-
-            var migrationService = scope.ServiceProvider.GetService<IMigrationRunner>();
-            var databaseService = scope.ServiceProvider.GetService<Database>();
-
-            databaseService!.CreateDatabase(databaseName);
-            migrationService!.ListMigrations();
-            migrationService!.MigrateUp();
-
-            return host;
+            databaseService.CreateDatabase(databaseName);
+            migrationService.ListMigrations();
+            migrationService.MigrateUp();
         }
+        catch
+        {
+            // Log error...
+            throw;
+        }
+        return host;
     }
 }

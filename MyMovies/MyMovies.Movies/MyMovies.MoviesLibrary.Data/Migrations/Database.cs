@@ -1,7 +1,7 @@
-﻿using Dapper;
+﻿
+using Dapper;
 using Microsoft.Extensions.Configuration;
 using MyMovies.MoviesLibrary.Data.Data;
-
 
 namespace MyMovies.MoviesLibrary.Data.Migrations;
 

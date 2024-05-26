@@ -1,0 +1,6 @@
+@MyMovies.FrontWeb.Server_HostAddress = http://localhost:5094
+
+GET {{MyMovies.FrontWeb.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

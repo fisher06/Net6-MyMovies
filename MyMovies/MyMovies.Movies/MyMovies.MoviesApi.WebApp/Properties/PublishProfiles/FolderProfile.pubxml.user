@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\DATA\Sources\Git\net8-one.mymovies\MyMovies\MyMovies.Movies\MyMovies.MoviesApi.WebApp\bin\Debug\net8.0\publish\</_PublishTargetUrl>
+    <History>True|2024-05-01T16:35:41.1733321Z;True|2024-05-01T18:23:17.2239844+02:00;True|2024-05-01T18:20:43.1915326+02:00;True|2024-05-01T18:14:21.2476447+02:00;False|2024-05-01T18:14:10.9972917+02:00;True|2024-05-01T17:44:50.0388199+02:00;True|2024-05-01T17:36:52.0784206+02:00;True|2024-05-01T17:30:29.7251516+02:00;True|2024-05-01T17:17:05.0971737+02:00;True|2024-05-01T17:14:06.6241187+02:00;True|2024-05-01T17:11:01.1047085+02:00;True|2024-05-01T17:08:35.8272875+02:00;True|2024-05-01T15:27:36.5218564+02:00;True|2024-05-01T15:14:56.0749465+02:00;True|2024-05-01T15:04:10.7622411+02:00;True|2024-05-01T14:54:23.4039705+02:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>
